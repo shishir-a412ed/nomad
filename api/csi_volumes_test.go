@@ -3,7 +3,6 @@ package api
 import (
 	"testing"
 
-	"github.com/hashicorp/nomad/nomad/structs"
 	"github.com/stretchr/testify/require"
 )
 
@@ -22,13 +21,13 @@ func TestCSIVolumes_CRUD(t *testing.T) {
 	// Authorized QueryOpts. Use the root token to just bypass ACL details
 	opts := &QueryOptions{
 		Region:    "global",
-		Namespace: structs.DefaultNamespace,
+		Namespace: "default",
 		AuthToken: root.SecretID,
 	}
 
 	wpts := &WriteOptions{
 		Region:    "global",
-		Namespace: structs.DefaultNamespace,
+		Namespace: "default",
 		AuthToken: root.SecretID,
 	}
 
@@ -36,7 +35,7 @@ func TestCSIVolumes_CRUD(t *testing.T) {
 	v.Register(&CSIVolume{
 		ID:         "DEADBEEF-63C7-407F-AE82-C99FBEF78FEB",
 		Driver:     "minnie",
-		Namespace:  structs.DefaultNamespace,
+		Namespace:  "default",
 		MaxReaders: 5,
 		MaxWriters: 0,
 		Topology:   &CSITopology{Segments: map[string]string{"foo": "bar"}},
