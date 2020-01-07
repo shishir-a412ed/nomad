@@ -106,7 +106,6 @@ func (h *envoyBootstrapHook) Prestart(ctx context.Context, req *interfaces.TaskP
 		siToken:        siToken,
 	}.args()
 
-	// put old stuff in here
 	// Since Consul services are registered asynchronously with this task
 	// hook running, retry a small number of times with backoff.
 	for tries := 3; ; tries-- {
@@ -166,42 +165,6 @@ func (h *envoyBootstrapHook) Prestart(ctx context.Context, req *interfaces.TaskP
 	// Bootstrap written. Mark as done and move on.
 	resp.Done = true
 	return nil
-}
-
-func (h *envoyBootstrapHook) writeConfig(filename, config string) error {
-	if err := ioutil.WriteFile(filename, []byte(config), 0440); err != nil {
-		_ = os.Remove(filename)
-		return err
-	}
-	return nil
-}
-
-func (_ *envoyBootstrapHook) retry(ctx context.Context) bool {
-	select {
-	case <-ctx.Done():
-		return false
-	case <-time.After(2 * time.Second):
-		return true
-	}
-}
-
-func (h *envoyBootstrapHook) execute(cmd *exec.Cmd) (string, error) {
-	var (
-		stdout bytes.Buffer
-		stderr bytes.Buffer
-	)
-
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-
-	if err := cmd.Run(); err != nil {
-		_, recoverable := err.(*exec.ExitError)
-		// ExitErrors are recoverable since they indicate the
-		// command was runnable but exited with a unsuccessful
-		// error code.
-		return stderr.String(), structs.NewRecoverableError(err, recoverable)
-	}
-	return stdout.String(), nil
 }
 
 type envoyBootstrapArgs struct {
