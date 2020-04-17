@@ -11,9 +11,17 @@ func boolToPtr(b bool) *bool {
 	return &b
 }
 
+func ConvertBoolToPtr(b bool) *bool {
+	return boolToPtr(b)
+}
+
 // int8ToPtr returns the pointer to an int8
 func int8ToPtr(i int8) *int8 {
 	return &i
+}
+
+func ConvertIntToPtr(i int) *int {
+	return intToPtr(i)
 }
 
 // intToPtr returns the pointer to an int
@@ -21,9 +29,17 @@ func intToPtr(i int) *int {
 	return &i
 }
 
+func ConvertUint64ToPtr(u uint64) *uint64 {
+	return uint64ToPtr(u)
+}
+
 // uint64ToPtr returns the pointer to an uint64
 func uint64ToPtr(u uint64) *uint64 {
 	return &u
+}
+
+func ConvertInt64ToPtr(i int64) *int64 {
+	return int64ToPtr(i)
 }
 
 // int64ToPtr returns the pointer to a int64
@@ -34,6 +50,10 @@ func int64ToPtr(i int64) *int64 {
 // stringToPtr returns the pointer to a string
 func stringToPtr(str string) *string {
 	return &str
+}
+
+func ConvertStringToPtr(str string) *string {
+	return stringToPtr(str)
 }
 
 // timeToPtr returns the pointer to a time stamp

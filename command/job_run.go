@@ -93,6 +93,9 @@ Run Options:
   -preserve-counts
     If set, the existing task group counts will be preserved when updating a job.
 
+  -json
+    Boolean flag to indicate that input format is JSON instead of HCL.
+
   -consul-token
     If set, the passed Consul token is stored in the job before sending to the
     Nomad servers. This allows passing the Consul token without storing it in
@@ -272,6 +275,7 @@ func (c *JobRunCommand) Run(args []string) int {
 	opts.PolicyOverride = override
 	opts.PreserveCounts = preserveCounts
 
+	job.ID = helper.StringToPtr("example")
 	// Submit the job
 	resp, _, err := client.Jobs().RegisterOpts(job, opts, nil)
 	if err != nil {
@@ -290,6 +294,7 @@ func (c *JobRunCommand) Run(args []string) int {
 		return 1
 	}
 
+	fmt.Println("HELLO SUBMITTING JOB: STEP 2")
 	// Print any warnings if there are any
 	if resp.Warnings != "" {
 		c.Ui.Output(

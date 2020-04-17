@@ -66,6 +66,7 @@ func (c *Client) Jobs() *Jobs {
 // ParseHCL is used to convert the HCL repesentation of a Job to JSON server side.
 // To parse the HCL client side see package github.com/hashicorp/nomad/jobspec
 func (j *Jobs) ParseHCL(jobHCL string, canonicalize bool) (*Job, error) {
+	fmt.Println("HELLO HELLO ParseHCL")
 	var job Job
 	req := &JobsParseRequest{
 		JobHCL:       jobHCL,
@@ -108,6 +109,7 @@ func (j *Jobs) EnforceRegister(job *Job, modifyIndex uint64, q *WriteOptions) (*
 // Register is used to register a new job. It returns the ID
 // of the evaluation, along with any errors encountered.
 func (j *Jobs) RegisterOpts(job *Job, opts *RegisterOptions, q *WriteOptions) (*JobRegisterResponse, *WriteMeta, error) {
+	fmt.Println("HELLO REGISTER OPTS")
 	// Format the request
 	req := &JobRegisterRequest{
 		Job: job,

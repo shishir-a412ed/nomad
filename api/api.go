@@ -865,6 +865,7 @@ func (c *Client) putQuery(endpoint string, in, out interface{}, q *QueryOptions)
 // write is used to do a PUT request against an endpoint
 // and serialize/deserialized using the standard Nomad conventions.
 func (c *Client) write(endpoint string, in, out interface{}, q *WriteOptions) (*WriteMeta, error) {
+	fmt.Println("HELLO HELLO CLIENT WRITE")
 	r, err := c.newRequest("PUT", endpoint)
 	if err != nil {
 		return nil, err

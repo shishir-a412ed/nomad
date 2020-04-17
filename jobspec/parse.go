@@ -23,7 +23,17 @@ var errPortLabel = fmt.Errorf("Port label does not conform to naming requirement
 //
 // Due to current internal limitations, the entire contents of the
 // io.Reader will be copied into memory first before parsing.
-func Parse(r io.Reader) (*api.Job, error) {
+func Parse(r io.Reader, isJson bool) (*api.Job, error) {
+	var job api.Job
+
+	// If isJson is true, input type is JSON instead of HCL.
+	if isJson {
+		if err := UnmarshalJSON(r); err != nil {
+			return nil, err
+		}
+		return &job, nil
+	}
+
 	// Copy the reader into an in-memory buffer first since HCL requires it.
 	var buf bytes.Buffer
 	if _, err := io.Copy(&buf, r); err != nil {
@@ -51,8 +61,6 @@ func Parse(r io.Reader) (*api.Job, error) {
 		return nil, err
 	}
 
-	var job api.Job
-
 	// Parse the job out
 	matches := list.Filter("job")
 	if len(matches.Items) == 0 {
@@ -78,7 +86,7 @@ func ParseFile(path string) (*api.Job, error) {
 	}
 	defer f.Close()
 
-	return Parse(f)
+	return Parse(f, false)
 }
 
 func parseReschedulePolicy(final **api.ReschedulePolicy, list *ast.ObjectList) error {
